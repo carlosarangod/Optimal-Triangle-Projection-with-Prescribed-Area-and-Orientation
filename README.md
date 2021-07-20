@@ -7,3 +7,8 @@ Application to Position-Based Dynamics". In this project, we implement an algebr
 ### Prerequisites
 
 This method was implemented in Matlab although it can be easily adapted to different programming languages
+
+
+## Authors
+- __Carlos Arango Duque__ - *EnCoV, Université Clermont Auvergne*
+- **Adrien Bartoli** - *EnCoV, Université Clermont Auvergne*
