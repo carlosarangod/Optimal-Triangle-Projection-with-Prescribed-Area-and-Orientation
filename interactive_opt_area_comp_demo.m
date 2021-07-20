@@ -370,10 +370,12 @@ function interactive_opt_area_comp_demo
         hold on
         trplt1 = triplot(DT,Xa(:,1),Xa(:,2));
         if pbd_lin_flag; trplt2 = triplot(DT,Xb(:,1),Xb(:,2),'Color',red); end
-        if pbd_lin_flag
-            legend([trplt1,trplt2],{'PBD-opt','PBD-lin'})
-        else
-            legend(trplt1,{'PBD-opt'})
+        if time>1
+            if pbd_lin_flag
+                legend([trplt1,trplt2],{'PBD-opt','PBD-lin'})
+            else
+                legend(trplt1,{'PBD-opt'})
+            end
         end
         h = get(gca,'Children');
         set(gca,'Children',flipud(h))
