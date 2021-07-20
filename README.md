@@ -10,8 +10,8 @@ Our algebraic procedure can be found the function "optimal_Area_constr.m". This 
 - Run "interactive_opt_area_comp_demo.m" in Matlab
 - A guide will apear onscreen\
 ![Demo initial instructions](/Images/demo_guide.png)
-  - Select one of the shapes of the list
-  - Choose whether to include additional constraints to the simulation
+  - **Shapes**: select the mesh shape
+  - **Additional Constraints**:Choose whether to include additional constraints to the simulation
   - Choose whether to simulate PBD-opt only or if you want to compare it with PBD-lin
   - click on start 
 - A window with the selected mesh will appear
