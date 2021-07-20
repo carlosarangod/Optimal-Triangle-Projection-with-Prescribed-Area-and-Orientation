@@ -8,15 +8,18 @@ Our algebraic procedure can be found the function "optimal_Area_constr.m". This 
 ## Running demo, step by step
 - Download "interactive_opt_area_comp_demo.m", "optimal_Area_constr.m" along with the functions and meshes folders.
 - Run "interactive_opt_area_comp_demo.m" in Matlab
-- A guide will apear onscreen\
-![Demo initial instructions](/Images/demo_guide.png)
+- A guide will apear onscreen with the following parameters
   - **Shapes**: select the mesh shape
-  - **Additional Constraints**:Choose whether to include additional constraints to the simulation
-  - Choose whether to simulate PBD-opt only or if you want to compare it with PBD-lin
-  - click on start 
-- A window with the selected mesh will appear
-- Click and drag the external vertices of the mesh
-  
+  - **Additional Constraints**: include additional constraints to the simulation
+  - **Method Comparison**: choose if the simulation compare PBD-opt with PBD-lin
+  - **Additional Settings**: Select the maximum number of iterations and stop criteria Tc
+  <img src="/Images/demo_guide.png" alt="drawing" width="350"/>
+- After choosing the parameters click in start and a window with the selected mesh will appear
+- Click and drag the external vertices of the mesh as the initial displacement for the deformation
+  <img src="/Images/demo_guide.png" alt="drawing" width="350"/>
+- Press the spacebar
+- If the option **pin constraint** was selected, click on the vertices to pin on place. Press the spacebar 
+- After the simulation has finished
 
 ## Authors
 - __Carlos Arango Duque__ - *EnCoV, Université Clermont Auvergne*
