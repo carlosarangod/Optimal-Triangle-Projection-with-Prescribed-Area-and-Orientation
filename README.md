@@ -3,10 +3,11 @@ This is the companion code of "Mean Oriented Riesz Features for Micro Expression
 Application to Position-Based Dynamics". In this project, we implement an algebraic procedure to find the optimal solution for the problem of finding the closest triangle under prescribed area and orientation. We adapt our method to implement PBD (point based dynamycs), for 2D mesh editing and compare its performance with respect to the existing PBD implementation with linearisation.
 
 ## Getting Started
+Our algebraic procedure can be found the function "optimal_Area_constr.m". This method was implemented in Matlab although it can be easily adapted to different programming languages.  For illustrative purposes, we have also provided an interactive software demo where meshes of different shapes can be edited and deformed interactively with different constraint sets.
 
-### Prerequisites
-
-This method was implemented in Matlab although it can be easily adapted to different programming languages
+### Running demo, step by step
+- Download any of the databases previously mentioned
+- Run Riesz_features_extraction.m in Matlab
 
 
 ## Authors
