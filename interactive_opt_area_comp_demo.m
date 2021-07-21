@@ -8,17 +8,19 @@ function interactive_opt_area_comp_demo
     dist_const_flag = add_const_vec(1);
     pin_const_flag = add_const_vec(2);
     grav_const_flag = add_const_vec(3);
+    hard_reset_flag = false;
     dt = 2e-4;
     g = [0 -9.8];
-
+    global h4
+    h4 = [];
     if start_flag
-        [X,DT,Edge_vertices,Sides,Graph_Lim] = Mesh_Model_Load(list{shape_sel});
-%         [X,DT,Edge_vertices,Sides,B_Sides,Graph_Lim] = Mesh_Model_Generation(list{shape_sel},'coarse');
+        [Init_X,DT,Edge_vertices,Sides,Graph_Lim] = Mesh_Model_Load(list{shape_sel});
+        X = Init_X;
+        Prev_X = Init_X;
         %%%% Plot Initialization
         f1 = figure('Position',[55 78 733 690],...
             'KeyPressFcn',@pressKey,'WindowButtonUpFcn',@dropObject,...
             'WindowButtonMotionFcn',@moveObject);
-%         ,'WindowButtonDownFcn',@clickObject);
         hold on
         trplt1 = triplot(DT,X(:,1),X(:,2));
         trplt2 = [];
@@ -93,12 +95,8 @@ function interactive_opt_area_comp_demo
             circ(k) = plot(X(external_vert(k),1),X(external_vert(k),2),'o','MarkerSize',10,'MarkerFaceColor',blue,...
                 'MarkerEdgeColor',blue,'ButtonDownFcn',{@dragObject},'UserData',k,'Tag',strcat('circ',num2str(k)));
         end    
-    %     unfixed = setdiff(1:n_particles,fixed_seg);
         pin_start_flag = false;
-
         Convergence_point = Displ_conv;
-        Init_X = X;
-        Prev_X = X;
         fixed_indices = [];
         t=1;
         if pin_const_flag
@@ -267,19 +265,25 @@ function interactive_opt_area_comp_demo
             start_flag = false;
         elseif strcmp(get(gcf,'CurrentCharacter'),' ')
             if exist('h2'); delete(h2); end
-            if pin_const_flag
-              if ~pin_start_flag 
-                  pin_start_flag = true;
-              else
-                  start_flag = true;
-                  X = PBD_animatiom(X,fixed_indices);
-              end
-            else
-                  start_flag = true;
-                  X = PBD_animatiom(X,fixed_indices);
+            if ~isempty(fixed_indices) && t<=1
+                if pin_const_flag
+                  if ~pin_start_flag 
+                      pin_start_flag = true;
+                  else
+                      start_flag = true;
+                      X = PBD_animatiom(X,fixed_indices);
+                  end
+                else
+                      start_flag = true;
+                      X = PBD_animatiom(X,fixed_indices);
+                end
             end
         elseif strcmp(get(gcf,'CurrentCharacter'),'z')
-            Hard_Reset_Graph()
+            Hard_Reset_Graph(Init_X);
+            X = Init_X;
+            Prev_X = Init_X;
+            fixed_indices = [];
+            hard_reset_flag = true;
         end
     end
     function dragObject(hObject,eventdata)
@@ -325,11 +329,17 @@ function interactive_opt_area_comp_demo
             set(dragging,'YData', newPos(1,2));
             index = get(dragging,'UserData');
             fixed = external_vert(index);
+            if hard_reset_flag
+                X = Init_X;
+                hard_reset_flag = false;
+            end
             X(fixed,1) = newPos(1,1);
             X(fixed,2) = newPos(1,2);
+            Update_Graph(X,X,1)
             delete(trplt1)
             if pbd_lin_flag; delete(trplt2); end
             trplt1 = triplot(DT,X(:,1),X(:,2));
+%             if exist('h4'); set(h4,'visible','off'); end
             h = get(gca,'Children');
             set(gca,'Children',flipud(h))
         end
@@ -342,20 +352,19 @@ function interactive_opt_area_comp_demo
         end
         Update_Graph(Prev_X,Prev_X,0)
     end
-    function Hard_Reset_Graph
-        X = Init_X;
+    function Hard_Reset_Graph(Init_X)
+        start_flag = false;
         Update_Graph(Init_X,Init_X,0)
         for k = 1:length(external_vert)
             q = findobj('Tag',strcat('circ',num2str(k)));
             set(q,'XData',Init_X(external_vert(k),1),'YData',Init_X(external_vert(k),2),...
                 'MarkerFaceColor',blue,'MarkerEdgeColor',blue)
         end
+        if exist('h4'); set(h4,'visible','off'); end
+
         f2.Visible = 'off';
         f3.Visible = 'off';
         f4.Visible = 'off';
-        start_flag = false;
-        Prev_X = Init_X;
-        fixed_indices = [];
         t = 1;
     end
     function Update_Graph(Xa,Xb,time)
@@ -372,9 +381,9 @@ function interactive_opt_area_comp_demo
         if pbd_lin_flag; trplt2 = triplot(DT,Xb(:,1),Xb(:,2),'Color',red); end
         if time>1
             if pbd_lin_flag
-                legend([trplt1,trplt2],{'PBD-opt','PBD-lin'})
+                h4 = legend([trplt1,trplt2],{'PBD-opt','PBD-lin'});
             else
-                legend(trplt1,{'PBD-opt'})
+                h4 = legend(trplt1,{'PBD-opt'});
             end
         end
         h = get(gca,'Children');
